@@ -44,6 +44,7 @@ Patch locales functions to koa app.
   - {String} functionName: locale function name patch on koa context. Optional, default is `__`.
   - {String} dirs: locales resources store directories. Optional, default is `['$PWD/locales']`.
   - {String} defaultLocale: default locale. Optional, default is `en-US`.
+  - {Boolean} fallbackToDefaultLocale: fall back to default local if current translation is not found. Optional, default is `false`.
   - {String} queryField: locale field name on query. Optional, default is `locale`.
   - {String} cookieField: locale field name on cookie. Optional, default is `locale`.
   - {String} cookieDomain: domain on cookie. Optional, default is `''`.

@@ -14,6 +14,7 @@ const MakePlural = require('make-plural');
 
 const DEFAULT_OPTIONS = {
   defaultLocale: 'en-US',
+  fallbackToDefaultLocale: 'false',
   queryField: 'locale',
   cookieField: 'locale',
   localeAlias: {},
@@ -28,6 +29,7 @@ const DEFAULT_OPTIONS = {
 module.exports = function (app, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const defaultLocale = formatLocale(options.defaultLocale);
+  const fallbackToDefaultLocale = options.fallbackToDefaultLocale;
   const queryField = options.queryField;
   const cookieField = options.cookieField;
   const cookieDomain = options.cookieDomain;
@@ -92,6 +94,9 @@ module.exports = function (app, options) {
     const resource = resources[locale] || {};
 
     let text = resource[key];
+    if (text === undefined && fallbackToDefaultLocale === true) {
+      text = resources[defaultLocale][key];
+    }
     if (text === undefined) {
       text = key;
     }
@@ -178,7 +183,9 @@ module.exports = function (app, options) {
     if (text === undefined && isObject(key)) {
       text = key[p(count)] || key["other"]; 
     }
-    
+    if (text === undefined && fallbackToDefaultLocale === true) {
+      text = resources[defaultLocale][key+"."+p(count)] || resources[defaultLocale][key+".other"];
+    }    
     if (text === undefined) {
       text = key;
     }
